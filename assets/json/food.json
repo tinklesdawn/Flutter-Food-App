@@ -1,0 +1,170 @@
+[
+  {
+    "foodType" : 0,
+    "image" : "assets/images/pizzas/pizza.jpg",
+    "name" : "Пицца царская 790г",
+    "structure" : "Тесто, помидоры, лук, маслины, кукуруза, бекон",
+    "cost" : 1099
+  },
+  {
+    "foodType" : 0,
+    "image" : "assets/images/pizzas/peperoni.jpg",
+    "name" : "Пицца пепперони 790г",
+    "structure" : "Тесто, сыр, колбаса салями",
+    "cost" : 899
+  },
+  {
+    "foodType" : 0,
+    "image" : "assets/images/pizzas/pizza.jpg",
+    "name" : "Пицца царская 2 790г",
+    "structure" : "Тесто, помидоры, лук, маслины, кукуруза, бекон",
+    "cost" : 1099
+  },
+  {
+    "foodType" : 0,
+    "image" : "assets/images/pizzas/mushroom.jpg",
+    "name" : "Пицца грибная 790г",
+    "structure" : "Тесто, лук, грибы, много грибов",
+    "cost" : 949
+  },
+  {
+    "foodType" : 0,
+    "image" : "assets/images/pizzas/pizza.jpg",
+    "name" : "Пицца царская 3 790г",
+    "structure" : "Тесто, помидоры, лук, маслины, кукуруза, бекон",
+    "cost" : 1099
+  },
+  {
+    "foodType" : 0,
+    "image" : "assets/images/pizzas/extrameat.jpg",
+    "name" : "Пицца супермясная 790г",
+    "structure" : "Тесто, помидоры, мясо разных сортов",
+    "cost" : 969
+  },
+  {
+    "foodType" : 0,
+    "image" : "assets/images/pizzas/pizza.jpg",
+    "name" : "Пицца царская 4 790г",
+    "structure" : "Тесто, помидоры, лук, маслины, кукуруза, бекон",
+    "cost" : 1099
+  },
+  {
+    "foodType" : 1,
+    "image" : "assets/images/burgers/burger.jpg",
+    "name" : "Бургер #простоклассный",
+    "structure" : "Обычный бургер, но просто классный",
+    "cost" : 299
+  },
+  {
+    "foodType" : 1,
+    "image" : "assets/images/burgers/burger.jpg",
+    "name" : "Бургер #простоклассный 2",
+    "structure" : "Обычный бургер, но просто классный 2",
+    "cost" : 299
+  },
+  {
+    "foodType" : 1,
+    "image" : "assets/images/burgers/burger.jpg",
+    "name" : "Бургер #простоклассный 3",
+    "structure" : "Обычный бургер, но просто классный 3",
+    "cost" : 299
+  },
+  {
+    "foodType" : 1,
+    "image" : "assets/images/burgers/cheesburger.jpg",
+    "name" : "Чизбургер",
+    "structure" : "Обычный бургер, но просто с сыром",
+    "cost" : 309
+  },
+  {
+    "foodType" : 1,
+    "image" : "assets/images/burgers/burger.jpg",
+    "name" : "Бургер #простоклассный 4",
+    "structure" : "Обычный бургер, но просто классный 4",
+    "cost" : 299
+  },
+  {
+    "foodType" : 1,
+    "image" : "assets/images/burgers/whopper.jpg",
+    "name" : "Воппер",
+    "structure" : "Планктон украл секретный рецепт у бургер кинга, но вам его не скажем",
+    "cost" : 319
+  },
+  {
+    "foodType" : 2,
+    "image" : "assets/images/snacks/snack.jpg",
+    "name" : "Ассорти 490г",
+    "structure" : "Закуски, разные на любой вкус и цвет, как фломастеры",
+    "cost" : 549
+  },
+  {
+    "foodType" : 2,
+    "image" : "assets/images/snacks/onionrings.jpg",
+    "name" : "Луковые кольца 250г",
+    "structure" : "Луковые кольца к пиву(пива в меню нет, несите с собой)",
+    "cost" : 299
+  },
+  {
+    "foodType" : 2,
+    "image" : "assets/images/snacks/snack.jpg",
+    "name" : "Ассорти 2 490г",
+    "structure" : "Закуски, разные на любой вкус и цвет, как фломастеры 2",
+    "cost" : 549
+  },
+  {
+    "foodType" : 2,
+    "image" : "assets/images/snacks/onionrings.jpg",
+    "name" : "Луковые кольца 2 250г",
+    "structure" : "Луковые кольца 2 к пиву(пива в меню нет, несите с собой)",
+    "cost" : 299
+  },
+  {
+    "foodType" : 2,
+    "image" : "assets/images/snacks/snack.jpg",
+    "name" : "Ассорти 3 490г",
+    "structure" : "Закуски, разные на любой вкус и цвет, как фломастеры 3",
+    "cost" : 549
+  },
+  {
+    "foodType" : 2,
+    "image" : "assets/images/snacks/onionrings.jpg",
+    "name" : "Луковые кольца 3 250г",
+    "structure" : "Луковые кольца 3 к пиву(пива в меню нет, несите с собой)",
+    "cost" : 299
+  },
+  {
+    "foodType" : 2,
+    "image" : "assets/images/snacks/snack.jpg",
+    "name" : "Ассорти 4 490г",
+    "structure" : "Закуски, разные на любой вкус и цвет, как фломастеры 4",
+    "cost" : 549
+  },
+  {
+    "foodType" : 3,
+    "image" : "assets/images/desserts/dessert.jpg",
+    "name" : "Ягодное диво 250г",
+    "structure" : "Сливки, вишня, бисквит",
+    "cost" : 299
+  },
+  {
+    "foodType" : 3,
+    "image" : "assets/images/desserts/icecream.jpg",
+    "name" : "Мороженое 250г",
+    "structure" : "Последний советский пломбир, дошедший до нас в целости и сохранности",
+    "cost" : 10299
+  },
+  {
+    "foodType" : 3,
+    "image" : "assets/images/desserts/napoleon.jpg",
+    "name" : "Наполеон 250г",
+    "structure" : "Вот так оно бывает: захватываешь пол-Европы, а в твою честь называют торт",
+    "cost" : 299
+  },
+  {
+    "foodType" : 3,
+    "image" : "assets/images/desserts/potato.jpg",
+    "name" : "Пирожное картошка 320г",
+    "structure" : "Как в Беляевском в 2011 году",
+    "cost" : 99
+  }
+]
