@@ -5,7 +5,7 @@ abstract class MenuEvent {}
 
 class ChangeCategory extends MenuEvent{
   final int _category;
-
   ChangeCategory(this._category);
-
+}
+class UpdateData extends MenuEvent{
 }

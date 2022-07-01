@@ -12,21 +12,25 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   int selectedCategory = 0;
 
   MenuBloc() : super(MenuInitial()) {
-    initialize();
     on<MenuEvent>((event, emit) {
       // TODO: implement event handler
       if (event is ChangeCategory){
         _changeCategory(event, emit);
       }
+      if (event is UpdateData){
+        emit(MenuCategoryChanged());
+        _updateFood();
+      }
     });
   }
 
-  Future<void> initialize() async {
+  Future<void> _changeCategory(ChangeCategory event, Emitter emit) async{
+    emit(MenuCategoryChanged());
+    selectedCategory = event._category;
+    food.clear();
+  }
+
+  void _updateFood() async{
     food = await MenuDataProvider().selectFood(selectedCategory);
   }
-  Future<void> _changeCategory(ChangeCategory event, Emitter emit)async {
-    selectedCategory = event._category;
-    emit(MenuCategoryChanged());
-    food = await MenuDataProvider().selectFood(selectedCategory);
-}
 }

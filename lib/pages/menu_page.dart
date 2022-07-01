@@ -210,6 +210,7 @@ class MenuWidget extends StatelessWidget{
 
   ///Создает лист из FoodWidget
   List<FoodWidget> _createFoodWidgets(MenuBloc bloc){
+    bloc.add(UpdateData());
     List<FoodWidget> foodWidgets = [];
     for(int i=0; i<bloc.food.length; i++){
       foodWidgets.add(FoodWidget(foodObject: bloc.food[i]));
