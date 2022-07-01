@@ -11,7 +11,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   List<Food> food = [];
   int selectedCategory = 0;
 
-  MenuBloc() : super(MenuCategoryChanged()) {
+  MenuBloc() : super(MenuInitial()) {
     initialize();
     on<MenuEvent>((event, emit) {
       // TODO: implement event handler
