@@ -1,34 +1,33 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:foodapp/domain/blocs/menu_bloc.dart';
+import 'package:foodapp/pages/product_description_page.dart';
 import '../constants.dart';
 import 'package:foodapp/domain/entities/food.dart';
-import 'product_description_page.dart';
-
-final bloc = MenuBloc.bloc;
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MenuPage extends StatelessWidget{
   const MenuPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocProvider(
+        create: (context) => MenuBloc(),
+    child: Scaffold(
       appBar: foodAppBar(),
       body: SizedBox(
         child: Expanded(
           child: Container(
             color: ConstColors.backgroundWhite,
             child: Column(
-              children: [
+              children: const [
                 FoodTabBar(),
-                Menu(),
+                MenuWidget(),
               ],
             ),
           ),
         ),
       ),
+    ),
     );
   }
 
@@ -53,80 +52,74 @@ AppBar foodAppBar(){
 
 ///TabBar
 class FoodTabBar extends StatelessWidget{
-  FoodTabBar({Key? key}) : super(key: key);
-
-  List<TabButton> buttons = const[
-    TabButton("Пицца", 0),
-    TabButton("Бургер", 1),
-    TabButton("Закуски", 2),
-    TabButton("Десерты", 3),
-  ];
+  const FoodTabBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-    return Container(
-      child: StreamBuilder(
-        stream: bloc.controller,
-        builder: (context, data){
-          return Container(
-            color: ConstColors.backgroundWhite,
-            child: Column(
-              children: [
-                Container(
-                  width: double.maxFinite,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0,0,0,0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: buttons,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: double.maxFinite,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 7, 0, 15),
-                    child: Text(
-                      _activeButton()._text,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: ConstColors.unselectedTabText,
+    final bloc = BlocProvider.of<MenuBloc>(context);
+          return BlocBuilder<MenuBloc, MenuState>(
+            builder: (BuildContext context, state) {
+              return Container(
+              color: ConstColors.backgroundWhite,
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0,0,0,0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: buttons(),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 7, 0, 15),
+                      child: Text(
+                        _activeButton(bloc)._text,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: ConstColors.unselectedTabText,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              );
+              },
           );
-        },
-      ),
-    );
   }
 
-  TabButton _activeButton(){
-    for(int i = 0; i< buttons.length; i++){
-      if(buttons[i]._isActive()){
-        return buttons[i];
+  TabButton _activeButton(MenuBloc bloc){
+    var button = buttons();
+    for(int i = 0; i< button.length; i++){
+      if(button[i]._isActive(bloc.selectedCategory)){
+        return button[i];
       }
     }
     throw Exception("No one bar is active!");
   }
+
+  List<TabButton> buttons() {
+    List<TabButton> buttonS =
+      [
+        TabButton("Пицца", 0),
+        TabButton("Бургер", 1),
+        TabButton("Закуски", 2),
+        TabButton("Десерты", 3),
+      ];
+    return buttonS;
+  }
+
 }
 
 ///Кнопка в таббаре
 class TabButton extends StatelessWidget {
   final String _text;
   final int _categoryNumber;
-
-  final TextStyle styleUnselected = const TextStyle(
-      color: ConstColors.unselectedTabText,
-      fontSize: 15
-  );
-  final TextStyle styleSelected = const TextStyle(
-    color: ConstColors.textOrange,
-    fontSize: 15,
-  );
 
   get categoryNumber => _categoryNumber;
 
@@ -135,42 +128,43 @@ class TabButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<MenuState>(
-        stream: bloc.controller,
-        initialData: bloc.state,
-        builder: (context, data) {
-          return Expanded(
-            child: Container(
-              decoration: _boxStyle(),
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  shadowColor: Colors.transparent,
-                  backgroundColor: Colors.transparent,
-                ),
-                onPressed: () {
-                  bloc.changeCategory(categoryNumber);
-                },
-                child: Text(
-                  _text,
-                  style: _textStyle(),
-                ),
-              ),
-            ),
-          );
-        }
+    final MenuBloc bloc = BlocProvider.of<MenuBloc>(context);
+    return Expanded(
+      child: Container(
+        decoration: _boxStyle(bloc),
+        child: TextButton(
+          style: TextButton.styleFrom(
+            shadowColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+          ),
+          onPressed: () {
+            bloc.add(ChangeCategory(_categoryNumber));
+          },
+          child: Text(
+            _text,
+            style: _textStyle(bloc.selectedCategory),
+          ),
+        ),
+      ),
     );
   }
 
-  TextStyle _textStyle() {
-    if (_categoryNumber == bloc.state.selectedCategory) {
-      return styleSelected;
+  TextStyle _textStyle(int selectedCategory) {
+    if (_categoryNumber != selectedCategory) {
+      return const TextStyle(
+          color: ConstColors.unselectedTabText,
+          fontSize: 15
+      );
     } else {
-      return styleUnselected;
+      return const TextStyle(
+        color: ConstColors.textOrange,
+        fontSize: 15,
+      );
     }
   }
 
-  BoxDecoration _boxStyle() {
-    if (_isActive()) {
+  BoxDecoration _boxStyle(MenuBloc bloc) {
+    if (_categoryNumber == bloc.selectedCategory) {
       return const BoxDecoration(
           border: Border(
               bottom: BorderSide(
@@ -184,53 +178,41 @@ class TabButton extends StatelessWidget {
     }
   }
 
-  bool _isActive() {
-    return (_categoryNumber == bloc.state.selectedCategory);
+  bool _isActive(int selectedCategory) {
+    return (_categoryNumber == selectedCategory);
   }
 
 }
 ///Страница с меню
-class Menu extends StatelessWidget{
+class MenuWidget extends StatelessWidget{
+  const MenuWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-              child: Container(
+    final bloc = BlocProvider.of<MenuBloc>(context);
+    return BlocBuilder<MenuBloc, MenuState>(
+        builder: (BuildContext context, state) {
+        return Expanded(
+            child: Container(
                 color: ConstColors.backgroundWhite,
-                child: StreamBuilder<MenuState>(
-                  initialData: bloc.state,
-                  stream: bloc.controller,
-                  builder: (context, data){
-                    if(data.hasData){
-                      return SingleChildScrollView(
+                child: SingleChildScrollView(
                         child: Column(
-                          children: _createFoodWidgets(),
+                          children: _createFoodWidgets(bloc),
                         ),
-                      );
-                    } else if(data.hasError){
-                      return Center(
-                        child: Text(
-                          "Error: ${data.error}",
-                        ),
-                      );
-                    } else {
-                      return const Center(
-                        child: Text(
-                            "Empty"
-                          ),
-                        );
-                      }
-                    },
-                ),
-              ),
-    );
+                      )
+          )
+
+      );
+        }
+      );
   }
 
+
   ///Создает лист из FoodWidget
-  List<FoodWidget> _createFoodWidgets(){
+  List<FoodWidget> _createFoodWidgets(MenuBloc bloc){
     List<FoodWidget> foodWidgets = [];
-    for(int i=0; i<bloc.state.food.length; i++){
-      foodWidgets.add(FoodWidget(bloc.state.food[i]));
+    for(int i=0; i<bloc.food.length; i++){
+      foodWidgets.add(FoodWidget(foodObject: bloc.food[i]));
     }
     return foodWidgets;
   }
@@ -239,91 +221,83 @@ class Menu extends StatelessWidget{
 
 ///Виджет с картинкой товара, ценой, наименованием и описанием
 class FoodWidget extends StatelessWidget{
-  late Food _foodObject;
+  final Food foodObject;
 
-  FoodWidget(Food food){
-    _foodObject = food;
-  }
+  const FoodWidget({super.key, required this.foodObject});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 140,
       child: TextButton(
         onPressed: (){
-          Route route = MaterialPageRoute(builder: (context) => ProductDescription(_foodObject));
+          Route route = MaterialPageRoute(builder: (context) => ProductDescription(food: foodObject));
           Navigator.push(context, route);
         },
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
           shadowColor: Colors.transparent,
         ),
-        child: Container(
-          child: Row(
-          children: [
+        child: Row(
+        children: [
 
-            //Скругленное изображение товара
-            Container(
-              margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                child: AspectRatio(
-                  aspectRatio: 1/1,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image(
-                      fit: BoxFit.cover,
-                      image: _foodObject.getImage(),
-                    ),
+          //Скругленное изображение товара
+          Container(
+            margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+              child: AspectRatio(
+                aspectRatio: 1/1,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image(
+                    fit: BoxFit.cover,
+                    image: AssetImage(foodObject.image),
                   ),
                 ),
               ),
-
-            //Описание, название, стоимость
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        //flex: 4,
-                        child:
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _foodObject.name,
-                              style: const TextStyle(color: ConstColors.textDark, fontSize:  17),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              ),
-                            Expanded(
-                              child: Text(
-                                _foodObject.structure,
-                                style: const TextStyle(color: ConstColors.unselectedTabText, fontSize: 15),
-                                overflow: TextOverflow.fade,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      //color: Color.fromARGB(54, 255, 0, 0),
-                      width: double.maxFinite,
-                      //height: 40,
-                      child: Text(
-                        _foodObject.cost.toString(),
-                        style: const TextStyle(color: ConstColors.textOrange, fontSize: 22),
-                      ),
-                    ),
-                  ],
-                ),
-              )
             ),
-          ],
+
+          //Описание, название, стоимость
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          foodObject.name,
+                          style: const TextStyle(color: ConstColors.textDark, fontSize:  17),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          ),
+                        Expanded(
+                          child: Text(
+                            foodObject.structure,
+                            style: const TextStyle(color: ConstColors.unselectedTabText, fontSize: 15),
+                            overflow: TextOverflow.fade,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    //color: Color.fromARGB(54, 255, 0, 0),
+                    width: double.maxFinite,
+                    //height: 40,
+                    child: Text(
+                      foodObject.cost.toString(),
+                      style: const TextStyle(color: ConstColors.textOrange, fontSize: 22),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ),
+        ],
         ),
      ),
     );

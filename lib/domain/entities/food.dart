@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'food.g.dart';
@@ -28,8 +27,6 @@ class Food{
   String get name => _name;
   String get structure => _structure;
   int get cost => _cost;
-
-  ImageProvider getImage() => AssetImage(_image);
 
   factory Food.fromJson(Map<String, dynamic> json) => _$FoodFromJson(json);
   Map<String, dynamic> toJson() => _$FoodToJson(this);

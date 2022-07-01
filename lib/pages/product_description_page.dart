@@ -4,11 +4,11 @@ import 'package:foodapp/domain/entities/food.dart';
 
 ///Страница с подробным описанием товара
 class ProductDescription extends StatelessWidget{
-  late Food _food;
+  final Food food;
 
-  ProductDescription(Food food){
-    _food = food;
-  }
+  const ProductDescription({super.key, required this.food});
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -31,51 +31,49 @@ class ProductDescription extends StatelessWidget{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //Изображение товара
-                    Container(
+                    SizedBox(
                       width: double.maxFinite,
                       child: AspectRatio(
                         aspectRatio: 1/1,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
                           child: Image(
-                            image: _food.getImage(),
+                            image: AssetImage(food.image),
                             fit: BoxFit.cover,
                           ),
                         ),
                       ),
                     ),
                     //Наименование, описание
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          child: Text(
+                            food.name,
+                            style: const TextStyle(
+                              fontSize: 19,
+                              color: ConstColors.textDark,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          child: Expanded(
                             child: Text(
-                              _food.name,
+                              food.structure,
                               style: const TextStyle(
-                                fontSize: 19,
+                                fontSize: 16,
                                 color: ConstColors.textDark,
                               ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                              overflow: TextOverflow.fade,
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Expanded(
-                              child: Text(
-                                _food.structure,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: ConstColors.textDark,
-                                ),
-                                overflow: TextOverflow.fade,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                        )
+                      ],
                     ),
                   ],
                 ),
@@ -96,7 +94,7 @@ class ProductDescription extends StatelessWidget{
                   )
                 ),
                 child: Text(
-                  '${_food.cost.toString()} ₽',
+                  '${food.cost.toString()} ₽',
                   style: const TextStyle(
                     fontSize: 22,
                     color: ConstColors.textOrange,
@@ -116,7 +114,7 @@ class ProductDescription extends StatelessWidget{
       backgroundColor: ConstColors.backgroundWhite,
       title: Row(
         children: [
-          Container(
+          SizedBox(
             width: 40,
             child: TextButton(
               style: ElevatedButton.styleFrom(
